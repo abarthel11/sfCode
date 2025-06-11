@@ -6,7 +6,7 @@
   border: 1px solid #d8dde6;
   border-radius: 0.25rem;
   background: white;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .search-results .slds-dropdown__item {
@@ -34,7 +34,7 @@
 
 .game-card:hover {
   border-color: #1589ee;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .player-symbol {

@@ -10,7 +10,7 @@
 }
 
 .slds-breadcrumb__item + .slds-breadcrumb__item::before {
-  content: '>';
+  content: ">";
   margin: 0 0.5rem;
   color: #706e6b;
 }

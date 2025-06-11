@@ -13,8 +13,7 @@ describe("c-tic-tac-toe-leaderboard", () => {
       is: TicTacToeLeaderboard
     });
     document.body.appendChild(element);
-    
+
     expect(element).toBeTruthy();
   });
-
 });

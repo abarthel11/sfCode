@@ -15,7 +15,7 @@ describe("c-tic-tac-toe-board", () => {
     element.board = Array(9).fill("");
     element.winningLine = [];
     element.isGameOver = false;
-    
+
     document.body.appendChild(element);
 
     const gameBoard = element.shadowRoot.querySelector(".game-board");
@@ -33,7 +33,7 @@ describe("c-tic-tac-toe-board", () => {
     element.board = ["X", "O", "", "", "X", "", "", "", ""];
     element.winningLine = [];
     element.isGameOver = false;
-    
+
     document.body.appendChild(element);
 
     const cells = element.shadowRoot.querySelectorAll("c-tic-tac-toe-cell");
@@ -50,7 +50,7 @@ describe("c-tic-tac-toe-board", () => {
     element.board = ["X", "X", "X", "O", "O", "", "", "", ""];
     element.winningLine = [0, 1, 2];
     element.isGameOver = true;
-    
+
     document.body.appendChild(element);
 
     const cells = element.shadowRoot.querySelectorAll("c-tic-tac-toe-cell");
@@ -67,11 +67,11 @@ describe("c-tic-tac-toe-board", () => {
     element.board = ["X", "X", "X", "O", "O", "", "", "", ""];
     element.winningLine = [0, 1, 2];
     element.isGameOver = true;
-    
+
     document.body.appendChild(element);
 
     const cells = element.shadowRoot.querySelectorAll("c-tic-tac-toe-cell");
-    cells.forEach(cell => {
+    cells.forEach((cell) => {
       expect(cell.disabled).toBe(true);
     });
   });
@@ -83,7 +83,7 @@ describe("c-tic-tac-toe-board", () => {
     element.board = Array(9).fill("");
     element.winningLine = [];
     element.isGameOver = false;
-    
+
     document.body.appendChild(element);
 
     const handler = jest.fn();
@@ -95,7 +95,7 @@ describe("c-tic-tac-toe-board", () => {
       detail: { index: 0 },
       bubbles: true
     });
-    
+
     cells[0].dispatchEvent(cellClickEvent);
 
     expect(handler).toHaveBeenCalledTimes(1);
@@ -109,7 +109,7 @@ describe("c-tic-tac-toe-board", () => {
     element.board = ["X", "", "O", "", "", "", "", "", ""];
     element.winningLine = [];
     element.isGameOver = false;
-    
+
     document.body.appendChild(element);
 
     const cells = element.shadowRoot.querySelectorAll("c-tic-tac-toe-cell");

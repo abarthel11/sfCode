@@ -1,28 +1,33 @@
 <template>
   <lightning-card title="Multiplayer Tic Tac Toe" icon-name="standard:games">
     <div class="slds-card__body slds-card__body_inner">
-      
       <!-- Loading state -->
       <template if:true={isLoading}>
         <div class="slds-align_absolute-center slds-p-around_medium">
-          <lightning-spinner alternative-text="Loading game..." size="medium"></lightning-spinner>
+          <lightning-spinner
+            alternative-text="Loading game..."
+            size="medium"
+          ></lightning-spinner>
         </div>
       </template>
-      
+
       <!-- Error state -->
       <template if:true={error}>
-        <div class="slds-notify slds-notify_alert slds-theme_alert-texture slds-theme_error" role="alert">
+        <div
+          class="slds-notify slds-notify_alert slds-theme_alert-texture slds-theme_error"
+          role="alert"
+        >
           <h2>{error}</h2>
         </div>
       </template>
-      
+
       <!-- Game content -->
       <template if:false={isLoading}>
-        
         <!-- Game session info -->
         <template if:true={gameSession}>
-          <div class="slds-grid slds-wrap slds-gutters_small slds-m-bottom_medium">
-            
+          <div
+            class="slds-grid slds-wrap slds-gutters_small slds-m-bottom_medium"
+          >
             <!-- Player info -->
             <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2">
               <div class="slds-box slds-box_x-small">
@@ -30,104 +35,121 @@
                 <div class="slds-grid slds-grid_align-spread">
                   <div class="slds-text-align_center">
                     <div class="slds-text-heading_medium player-x">X</div>
-                    <div class="slds-text-body_small">{gameSession.playerXName}</div>
+                    <div class="slds-text-body_small">
+                      {gameSession.playerXName}
+                    </div>
                     <template if:true={isPlayerXTurn}>
-                      <lightning-icon icon-name="utility:clock" size="xx-small" class="slds-m-left_xx-small"></lightning-icon>
+                      <lightning-icon
+                        icon-name="utility:clock"
+                        size="xx-small"
+                        class="slds-m-left_xx-small"
+                      ></lightning-icon>
                     </template>
                   </div>
-                  <div class="slds-text-heading_large slds-text-color_weak">VS</div>
+                  <div class="slds-text-heading_large slds-text-color_weak">
+                    VS
+                  </div>
                   <div class="slds-text-align_center">
                     <div class="slds-text-heading_medium player-o">O</div>
-                    <div class="slds-text-body_small">{gameSession.playerOName}</div>
+                    <div class="slds-text-body_small">
+                      {gameSession.playerOName}
+                    </div>
                     <template if:true={isPlayerOTurn}>
-                      <lightning-icon icon-name="utility:clock" size="xx-small" class="slds-m-left_xx-small"></lightning-icon>
+                      <lightning-icon
+                        icon-name="utility:clock"
+                        size="xx-small"
+                        class="slds-m-left_xx-small"
+                      ></lightning-icon>
                     </template>
                   </div>
                 </div>
               </div>
             </div>
-            
+
             <!-- Game status -->
             <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2">
-              <c-tic-tac-toe-game-status 
+              <c-tic-tac-toe-game-status
                 winner={gameSession.winnerId}
                 winner-name={gameSession.winnerName}
                 is-draw={gameSession.isDraw}
                 current-player={displayCurrentPlayer}
-                game-status={gameSession.gameStatus}>
+                game-status={gameSession.gameStatus}
+              >
               </c-tic-tac-toe-game-status>
             </div>
-            
           </div>
         </template>
-        
+
         <!-- Game board -->
         <template if:true={gameSession}>
           <div class="slds-grid slds-grid_align-center slds-m-bottom_medium">
-            <c-tic-tac-toe-board 
+            <c-tic-tac-toe-board
               board={gameSession.boardState}
               winning-line={gameSession.winningLine}
               disabled={isBoardDisabled}
-              oncellclick={handleCellClick}>
+              oncellclick={handleCellClick}
+            >
             </c-tic-tac-toe-board>
           </div>
         </template>
-        
+
         <!-- Game controls -->
         <template if:true={gameSession}>
           <div class="slds-grid slds-grid_align-center slds-gutters_small">
-            
             <!-- Accept invitation button -->
             <template if:true={showAcceptButton}>
               <div class="slds-col">
-                <lightning-button 
-                  label="Accept Invitation" 
-                  variant="brand" 
+                <lightning-button
+                  label="Accept Invitation"
+                  variant="brand"
                   onclick={handleAcceptInvitation}
-                  disabled={isProcessing}>
+                  disabled={isProcessing}
+                >
                 </lightning-button>
               </div>
             </template>
-            
+
             <!-- New game button -->
             <template if:true={showNewGameButton}>
               <div class="slds-col">
-                <lightning-button 
-                  label="New Game" 
-                  variant="neutral" 
+                <lightning-button
+                  label="New Game"
+                  variant="neutral"
                   onclick={handleNewGame}
-                  disabled={isProcessing}>
+                  disabled={isProcessing}
+                >
                 </lightning-button>
               </div>
             </template>
-            
+
             <!-- Back to lobby button -->
             <div class="slds-col">
-              <lightning-button 
-                label="Game Lobby" 
-                variant="neutral" 
-                onclick={handleBackToLobby}>
+              <lightning-button
+                label="Game Lobby"
+                variant="neutral"
+                onclick={handleBackToLobby}
+              >
               </lightning-button>
             </div>
-            
           </div>
         </template>
-        
+
         <!-- No game message -->
         <template if:false={gameSession}>
           <div class="slds-text-align_center slds-p-around_large">
             <h2 class="slds-text-heading_medium">No active game</h2>
-            <p class="slds-text-body_regular slds-m-bottom_medium">Start a new game from the lobby</p>
-            <lightning-button 
-              label="Go to Lobby" 
-              variant="brand" 
-              onclick={handleBackToLobby}>
+            <p class="slds-text-body_regular slds-m-bottom_medium">
+              Start a new game from the lobby
+            </p>
+            <lightning-button
+              label="Go to Lobby"
+              variant="brand"
+              onclick={handleBackToLobby}
+            >
             </lightning-button>
           </div>
         </template>
-        
       </template>
-      
     </div>
   </lightning-card>
 </template>

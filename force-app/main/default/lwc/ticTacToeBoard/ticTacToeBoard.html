@@ -1,15 +1,15 @@
 <template>
-    <div class="game-board" role="grid" aria-label="Tic Tac Toe game board">
-        <template for:each={cells} for:item="cell">
-            <c-tic-tac-toe-cell
-                key={cell.key}
-                value={cell.value}
-                index={cell.index}
-                disabled={cell.disabled}
-                is-winning-cell={cell.isWinningCell}
-                aria-label={cell.ariaLabel}
-                oncellclick={handleCellClick}
-            ></c-tic-tac-toe-cell>
-        </template>
-    </div>
+  <div class="game-board" role="grid" aria-label="Tic Tac Toe game board">
+    <template for:each={cells} for:item="cell">
+      <c-tic-tac-toe-cell
+        key={cell.key}
+        value={cell.value}
+        index={cell.index}
+        disabled={cell.disabled}
+        is-winning-cell={cell.isWinningCell}
+        aria-label={cell.ariaLabel}
+        oncellclick={handleCellClick}
+      ></c-tic-tac-toe-cell>
+    </template>
+  </div>
 </template>

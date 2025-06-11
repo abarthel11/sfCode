@@ -13,7 +13,7 @@ describe("c-tic-tac-toe-lobby", () => {
       is: TicTacToeLobby
     });
     document.body.appendChild(element);
-    
+
     expect(element).toBeTruthy();
   });
 });

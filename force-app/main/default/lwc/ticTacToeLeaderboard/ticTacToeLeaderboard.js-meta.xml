@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
     <apiVersion>58.0</apiVersion>
     <isExposed>true</isExposed>
@@ -8,8 +8,16 @@
         <target>lightning__RecordPage</target>
     </targets>
     <targetConfigs>
-        <targetConfig targets="lightning__AppPage,lightning__HomePage,lightning__RecordPage">
-            <property name="limit" type="Integer" label="Number of Players" description="Number of top players to display" default="10"/>
+        <targetConfig
+      targets="lightning__AppPage,lightning__HomePage,lightning__RecordPage"
+    >
+            <property
+        name="limit"
+        type="Integer"
+        label="Number of Players"
+        description="Number of top players to display"
+        default="10"
+      />
         </targetConfig>
     </targetConfigs>
 </LightningComponentBundle>

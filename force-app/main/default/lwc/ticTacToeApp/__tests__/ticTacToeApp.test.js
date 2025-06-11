@@ -13,7 +13,7 @@ describe("c-tic-tac-toe-app", () => {
       is: TicTacToeApp
     });
     document.body.appendChild(element);
-    
+
     expect(element).toBeTruthy();
   });
 });

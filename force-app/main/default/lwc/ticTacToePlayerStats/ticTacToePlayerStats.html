@@ -2,24 +2,25 @@
   <!-- Loading state -->
   <template if:true={isLoading}>
     <div class="slds-align_absolute-center">
-      <lightning-spinner alternative-text="Loading stats..." size="small"></lightning-spinner>
+      <lightning-spinner
+        alternative-text="Loading stats..."
+        size="small"
+      ></lightning-spinner>
     </div>
   </template>
-  
+
   <!-- Error state -->
   <template if:true={error}>
     <div class="slds-text-color_error slds-text-body_small">
       Failed to load statistics
     </div>
   </template>
-  
+
   <!-- Statistics display -->
   <template if:true={playerStats}>
     <div class="stats-container">
-      
       <!-- Main stats grid -->
       <div class="slds-grid slds-wrap slds-gutters_xx-small">
-        
         <!-- Wins -->
         <div class="slds-col slds-size_1-of-3">
           <div class="stat-item slds-text-align_center">
@@ -27,7 +28,7 @@
             <div class="stat-label slds-text-body_small">Wins</div>
           </div>
         </div>
-        
+
         <!-- Losses -->
         <div class="slds-col slds-size_1-of-3">
           <div class="stat-item slds-text-align_center">
@@ -35,7 +36,7 @@
             <div class="stat-label slds-text-body_small">Losses</div>
           </div>
         </div>
-        
+
         <!-- Draws -->
         <div class="slds-col slds-size_1-of-3">
           <div class="stat-item slds-text-align_center">
@@ -43,48 +44,55 @@
             <div class="stat-label slds-text-body_small">Draws</div>
           </div>
         </div>
-        
       </div>
-      
+
       <!-- Secondary stats -->
       <div class="slds-grid slds-wrap slds-gutters_xx-small slds-m-top_x-small">
-        
         <!-- Total games -->
         <div class="slds-col slds-size_1-of-2">
           <div class="slds-text-align_center">
-            <div class="slds-text-body_regular slds-text-color_weak">Total Games</div>
+            <div class="slds-text-body_regular slds-text-color_weak">
+              Total Games
+            </div>
             <div class="slds-text-heading_small">{playerStats.totalGames}</div>
           </div>
         </div>
-        
+
         <!-- Win percentage -->
         <div class="slds-col slds-size_1-of-2">
           <div class="slds-text-align_center">
-            <div class="slds-text-body_regular slds-text-color_weak">Win Rate</div>
+            <div class="slds-text-body_regular slds-text-color_weak">
+              Win Rate
+            </div>
             <div class="slds-text-heading_small">{formattedWinPercentage}</div>
           </div>
         </div>
-        
       </div>
-      
+
       <!-- Progress bar for win rate -->
       <template if:true={showProgressBar}>
         <div class="slds-m-top_small">
-          <lightning-progress-bar 
+          <lightning-progress-bar
             value={playerStats.winPercentage}
-            variant={progressBarVariant}>
+            variant={progressBarVariant}
+          >
           </lightning-progress-bar>
         </div>
       </template>
-      
     </div>
   </template>
-  
+
   <!-- No data state -->
   <template if:true={showNoDataMessage}>
     <div class="slds-text-align_center slds-p-around_small">
-      <lightning-icon icon-name="utility:info" size="small" class="slds-m-bottom_x-small"></lightning-icon>
-      <p class="slds-text-body_small slds-text-color_weak">No games played yet</p>
+      <lightning-icon
+        icon-name="utility:info"
+        size="small"
+        class="slds-m-bottom_x-small"
+      ></lightning-icon>
+      <p class="slds-text-body_small slds-text-color_weak">
+        No games played yet
+      </p>
     </div>
   </template>
 </template>

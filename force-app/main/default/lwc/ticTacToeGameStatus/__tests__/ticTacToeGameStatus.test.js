@@ -15,7 +15,7 @@ describe("c-tic-tac-toe-game-status", () => {
     element.winner = null;
     element.isDraw = false;
     element.currentPlayer = "X";
-    
+
     document.body.appendChild(element);
 
     const statusText = element.shadowRoot.querySelector("h2");
@@ -29,7 +29,7 @@ describe("c-tic-tac-toe-game-status", () => {
     element.winner = null;
     element.isDraw = false;
     element.currentPlayer = "O";
-    
+
     document.body.appendChild(element);
 
     const statusText = element.shadowRoot.querySelector("h2");
@@ -43,7 +43,7 @@ describe("c-tic-tac-toe-game-status", () => {
     element.winner = "X";
     element.isDraw = false;
     element.currentPlayer = "O";
-    
+
     document.body.appendChild(element);
 
     const statusText = element.shadowRoot.querySelector("h2");
@@ -57,7 +57,7 @@ describe("c-tic-tac-toe-game-status", () => {
     element.winner = null;
     element.isDraw = true;
     element.currentPlayer = "X";
-    
+
     document.body.appendChild(element);
 
     const statusText = element.shadowRoot.querySelector("h2");
@@ -71,7 +71,7 @@ describe("c-tic-tac-toe-game-status", () => {
     element.winner = "O";
     element.isDraw = true;
     element.currentPlayer = "X";
-    
+
     document.body.appendChild(element);
 
     const statusText = element.shadowRoot.querySelector("h2");
@@ -82,12 +82,12 @@ describe("c-tic-tac-toe-game-status", () => {
     const element = createElement("c-tic-tac-toe-game-status", {
       is: TicTacToeGameStatus
     });
-    
+
     document.body.appendChild(element);
 
     const gameStatus = element.shadowRoot.querySelector(".game-status");
     expect(gameStatus).toBeTruthy();
-    
+
     const heading = element.shadowRoot.querySelector("h2");
     expect(heading).toBeTruthy();
     expect(heading.classList.contains("slds-text-heading_medium")).toBe(true);

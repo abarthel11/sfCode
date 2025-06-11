@@ -15,10 +15,14 @@ describe("c-tic-tac-toe", () => {
     document.body.appendChild(element);
 
     // Check child components are rendered
-    const scoreboard = element.shadowRoot.querySelector("c-tic-tac-toe-scoreboard");
+    const scoreboard = element.shadowRoot.querySelector(
+      "c-tic-tac-toe-scoreboard"
+    );
     expect(scoreboard).toBeTruthy();
 
-    const gameStatus = element.shadowRoot.querySelector("c-tic-tac-toe-game-status");
+    const gameStatus = element.shadowRoot.querySelector(
+      "c-tic-tac-toe-game-status"
+    );
     expect(gameStatus).toBeTruthy();
 
     const board = element.shadowRoot.querySelector("c-tic-tac-toe-board");
@@ -37,8 +41,12 @@ describe("c-tic-tac-toe", () => {
 
     // Test that child components receive proper initial data
     const board = element.shadowRoot.querySelector("c-tic-tac-toe-board");
-    const scoreboard = element.shadowRoot.querySelector("c-tic-tac-toe-scoreboard");
-    const gameStatus = element.shadowRoot.querySelector("c-tic-tac-toe-game-status");
+    const scoreboard = element.shadowRoot.querySelector(
+      "c-tic-tac-toe-scoreboard"
+    );
+    const gameStatus = element.shadowRoot.querySelector(
+      "c-tic-tac-toe-game-status"
+    );
 
     expect(board.board).toEqual(Array(9).fill(""));
     expect(board.isGameOver).toBeFalsy();
@@ -53,8 +61,8 @@ describe("c-tic-tac-toe", () => {
     document.body.appendChild(element);
 
     const buttons = element.shadowRoot.querySelectorAll("lightning-button");
-    const buttonLabels = Array.from(buttons).map(btn => btn.label);
-    
+    const buttonLabels = Array.from(buttons).map((btn) => btn.label);
+
     expect(buttonLabels).toContain("New Game");
     expect(buttonLabels).toContain("Reset Score");
   });
@@ -66,12 +74,12 @@ describe("c-tic-tac-toe", () => {
     document.body.appendChild(element);
 
     const board = element.shadowRoot.querySelector("c-tic-tac-toe-board");
-    
+
     // Simulate cell click event
     const cellClickEvent = new CustomEvent("cellclick", {
       detail: { index: 0 }
     });
-    
+
     board.dispatchEvent(cellClickEvent);
 
     // Wait for DOM updates
@@ -79,7 +87,7 @@ describe("c-tic-tac-toe", () => {
 
     // Check that move was made
     expect(board.board[0]).toBe("X");
-    expect(board.board.filter(cell => cell === "").length).toBe(8);
+    expect(board.board.filter((cell) => cell === "").length).toBe(8);
   });
 
   it("alternates players correctly", async () => {
@@ -89,7 +97,9 @@ describe("c-tic-tac-toe", () => {
     document.body.appendChild(element);
 
     const board = element.shadowRoot.querySelector("c-tic-tac-toe-board");
-    const gameStatus = element.shadowRoot.querySelector("c-tic-tac-toe-game-status");
+    const gameStatus = element.shadowRoot.querySelector(
+      "c-tic-tac-toe-game-status"
+    );
 
     // First move - X
     board.dispatchEvent(new CustomEvent("cellclick", { detail: { index: 0 } }));
@@ -111,7 +121,9 @@ describe("c-tic-tac-toe", () => {
     document.body.appendChild(element);
 
     const board = element.shadowRoot.querySelector("c-tic-tac-toe-board");
-    const gameStatus = element.shadowRoot.querySelector("c-tic-tac-toe-game-status");
+    const gameStatus = element.shadowRoot.querySelector(
+      "c-tic-tac-toe-game-status"
+    );
 
     // Make first move
     board.dispatchEvent(new CustomEvent("cellclick", { detail: { index: 0 } }));
@@ -133,8 +145,12 @@ describe("c-tic-tac-toe", () => {
     document.body.appendChild(element);
 
     const board = element.shadowRoot.querySelector("c-tic-tac-toe-board");
-    const gameStatus = element.shadowRoot.querySelector("c-tic-tac-toe-game-status");
-    const scoreboard = element.shadowRoot.querySelector("c-tic-tac-toe-scoreboard");
+    const gameStatus = element.shadowRoot.querySelector(
+      "c-tic-tac-toe-game-status"
+    );
+    const scoreboard = element.shadowRoot.querySelector(
+      "c-tic-tac-toe-scoreboard"
+    );
 
     // Create winning scenario: X X X in top row
     board.dispatchEvent(new CustomEvent("cellclick", { detail: { index: 0 } })); // X
@@ -158,7 +174,9 @@ describe("c-tic-tac-toe", () => {
     document.body.appendChild(element);
 
     const board = element.shadowRoot.querySelector("c-tic-tac-toe-board");
-    const gameStatus = element.shadowRoot.querySelector("c-tic-tac-toe-game-status");
+    const gameStatus = element.shadowRoot.querySelector(
+      "c-tic-tac-toe-game-status"
+    );
 
     // Create winning scenario: O O O in first column
     board.dispatchEvent(new CustomEvent("cellclick", { detail: { index: 1 } })); // X
@@ -181,7 +199,9 @@ describe("c-tic-tac-toe", () => {
     document.body.appendChild(element);
 
     const board = element.shadowRoot.querySelector("c-tic-tac-toe-board");
-    const gameStatus = element.shadowRoot.querySelector("c-tic-tac-toe-game-status");
+    const gameStatus = element.shadowRoot.querySelector(
+      "c-tic-tac-toe-game-status"
+    );
 
     // Create winning scenario: X X X diagonally
     board.dispatchEvent(new CustomEvent("cellclick", { detail: { index: 0 } })); // X
@@ -203,8 +223,12 @@ describe("c-tic-tac-toe", () => {
     document.body.appendChild(element);
 
     const board = element.shadowRoot.querySelector("c-tic-tac-toe-board");
-    const gameStatus = element.shadowRoot.querySelector("c-tic-tac-toe-game-status");
-    const scoreboard = element.shadowRoot.querySelector("c-tic-tac-toe-scoreboard");
+    const gameStatus = element.shadowRoot.querySelector(
+      "c-tic-tac-toe-game-status"
+    );
+    const scoreboard = element.shadowRoot.querySelector(
+      "c-tic-tac-toe-scoreboard"
+    );
 
     // Create draw scenario
     const moves = [0, 1, 2, 4, 3, 5, 7, 6, 8]; // Results in draw
@@ -253,8 +277,12 @@ describe("c-tic-tac-toe", () => {
     document.body.appendChild(element);
 
     const board = element.shadowRoot.querySelector("c-tic-tac-toe-board");
-    const gameStatus = element.shadowRoot.querySelector("c-tic-tac-toe-game-status");
-    const scoreboard = element.shadowRoot.querySelector("c-tic-tac-toe-scoreboard");
+    const gameStatus = element.shadowRoot.querySelector(
+      "c-tic-tac-toe-game-status"
+    );
+    const scoreboard = element.shadowRoot.querySelector(
+      "c-tic-tac-toe-scoreboard"
+    );
 
     // Make some moves and create a win
     board.dispatchEvent(new CustomEvent("cellclick", { detail: { index: 0 } }));
@@ -267,8 +295,9 @@ describe("c-tic-tac-toe", () => {
     const initialXWins = scoreboard.playerXWins;
 
     // Click new game button
-    const newGameButton = Array.from(element.shadowRoot.querySelectorAll("lightning-button"))
-      .find(btn => btn.label === "New Game");
+    const newGameButton = Array.from(
+      element.shadowRoot.querySelectorAll("lightning-button")
+    ).find((btn) => btn.label === "New Game");
     newGameButton.click();
 
     await Promise.resolve();
@@ -290,7 +319,9 @@ describe("c-tic-tac-toe", () => {
     document.body.appendChild(element);
 
     const board = element.shadowRoot.querySelector("c-tic-tac-toe-board");
-    const scoreboard = element.shadowRoot.querySelector("c-tic-tac-toe-scoreboard");
+    const scoreboard = element.shadowRoot.querySelector(
+      "c-tic-tac-toe-scoreboard"
+    );
 
     // Create a win to increment score
     board.dispatchEvent(new CustomEvent("cellclick", { detail: { index: 0 } }));
@@ -303,8 +334,9 @@ describe("c-tic-tac-toe", () => {
     expect(scoreboard.playerXWins).toBe(1);
 
     // Click reset score button
-    const resetScoreButton = Array.from(element.shadowRoot.querySelectorAll("lightning-button"))
-      .find(btn => btn.label === "Reset Score");
+    const resetScoreButton = Array.from(
+      element.shadowRoot.querySelectorAll("lightning-button")
+    ).find((btn) => btn.label === "Reset Score");
     resetScoreButton.click();
 
     await Promise.resolve();
@@ -323,9 +355,12 @@ describe("c-tic-tac-toe", () => {
     document.body.appendChild(element);
 
     const board = element.shadowRoot.querySelector("c-tic-tac-toe-board");
-    const scoreboard = element.shadowRoot.querySelector("c-tic-tac-toe-scoreboard");
-    const newGameButton = Array.from(element.shadowRoot.querySelectorAll("lightning-button"))
-      .find(btn => btn.label === "New Game");
+    const scoreboard = element.shadowRoot.querySelector(
+      "c-tic-tac-toe-scoreboard"
+    );
+    const newGameButton = Array.from(
+      element.shadowRoot.querySelectorAll("lightning-button")
+    ).find((btn) => btn.label === "New Game");
 
     // Game 1: X wins
     // eslint-disable-next-line no-await-in-loop
@@ -370,7 +405,9 @@ describe("c-tic-tac-toe", () => {
     document.body.appendChild(element);
 
     const board = element.shadowRoot.querySelector("c-tic-tac-toe-board");
-    const gameStatus = element.shadowRoot.querySelector("c-tic-tac-toe-game-status");
+    const gameStatus = element.shadowRoot.querySelector(
+      "c-tic-tac-toe-game-status"
+    );
 
     // Test rapid consecutive clicks on same cell
     board.dispatchEvent(new CustomEvent("cellclick", { detail: { index: 0 } }));
@@ -389,15 +426,19 @@ describe("c-tic-tac-toe", () => {
     document.body.appendChild(element);
 
     const board = element.shadowRoot.querySelector("c-tic-tac-toe-board");
-    const gameStatus = element.shadowRoot.querySelector("c-tic-tac-toe-game-status");
+    const gameStatus = element.shadowRoot.querySelector(
+      "c-tic-tac-toe-game-status"
+    );
 
     // Make several moves and validate state consistency
     const moves = [0, 4, 1, 5, 2]; // X wins horizontally
     // eslint-disable-next-line no-await-in-loop
     for (let i = 0; i < moves.length; i++) {
-      board.dispatchEvent(new CustomEvent("cellclick", { detail: { index: moves[i] } }));
+      board.dispatchEvent(
+        new CustomEvent("cellclick", { detail: { index: moves[i] } })
+      );
       await Promise.resolve();
-      
+
       // Validate turn alternation before game ends
       if (i < moves.length - 1) {
         const expectedPlayer = i % 2 === 0 ? "O" : "X";

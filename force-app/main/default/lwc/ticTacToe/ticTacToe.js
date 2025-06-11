@@ -12,9 +12,14 @@ export default class TicTacToe extends LightningElement {
 
   // Win patterns could be moved to a constants file for better maintainability
   winPatterns = [
-    [0, 1, 2], [3, 4, 5], [6, 7, 8], // Rows
-    [0, 3, 6], [1, 4, 7], [2, 5, 8], // Columns
-    [0, 4, 8], [2, 4, 6] // Diagonals
+    [0, 1, 2],
+    [3, 4, 5],
+    [6, 7, 8], // Rows
+    [0, 3, 6],
+    [1, 4, 7],
+    [2, 5, 8], // Columns
+    [0, 4, 8],
+    [2, 4, 6] // Diagonals
   ];
 
   get isGameOver() {
@@ -47,9 +52,13 @@ export default class TicTacToe extends LightningElement {
   }
 
   checkWinner() {
-    return this.winPatterns.some(pattern => {
+    return this.winPatterns.some((pattern) => {
       const [a, b, c] = pattern;
-      if (this.board[a] && this.board[a] === this.board[b] && this.board[a] === this.board[c]) {
+      if (
+        this.board[a] &&
+        this.board[a] === this.board[b] &&
+        this.board[a] === this.board[c]
+      ) {
         this.winningLine = pattern;
         return true;
       }
@@ -58,7 +67,7 @@ export default class TicTacToe extends LightningElement {
   }
 
   checkDraw() {
-    return this.board.every(cell => cell !== "");
+    return this.board.every((cell) => cell !== "");
   }
 
   updateScore(winner) {

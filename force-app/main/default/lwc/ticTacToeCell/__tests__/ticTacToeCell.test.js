@@ -17,7 +17,7 @@ describe("c-tic-tac-toe-cell", () => {
     element.disabled = false;
     element.isWinningCell = false;
     element.ariaLabel = "Row 1, Column 1, empty";
-    
+
     document.body.appendChild(element);
 
     const button = element.shadowRoot.querySelector("button");
@@ -38,13 +38,15 @@ describe("c-tic-tac-toe-cell", () => {
     element.disabled = true;
     element.isWinningCell = false;
     element.ariaLabel = "Row 2, Column 2, marked by player X";
-    
+
     document.body.appendChild(element);
 
     const button = element.shadowRoot.querySelector("button");
     expect(button.textContent).toBe("X");
     expect(button.disabled).toBe(true);
-    expect(button.getAttribute("aria-label")).toBe("Row 2, Column 2, marked by player X");
+    expect(button.getAttribute("aria-label")).toBe(
+      "Row 2, Column 2, marked by player X"
+    );
   });
 
   it("renders winning cell", () => {
@@ -56,7 +58,7 @@ describe("c-tic-tac-toe-cell", () => {
     element.disabled = true;
     element.isWinningCell = true;
     element.ariaLabel = "Row 3, Column 3, marked by player O";
-    
+
     document.body.appendChild(element);
 
     const button = element.shadowRoot.querySelector("button");
@@ -70,7 +72,7 @@ describe("c-tic-tac-toe-cell", () => {
     element.value = "";
     element.index = 3;
     element.disabled = false;
-    
+
     document.body.appendChild(element);
 
     const handler = jest.fn();
@@ -90,7 +92,7 @@ describe("c-tic-tac-toe-cell", () => {
     element.value = "X";
     element.index = 1;
     element.disabled = true;
-    
+
     document.body.appendChild(element);
 
     const handler = jest.fn();

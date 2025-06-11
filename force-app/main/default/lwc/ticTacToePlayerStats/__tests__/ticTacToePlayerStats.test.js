@@ -13,8 +13,7 @@ describe("c-tic-tac-toe-player-stats", () => {
       is: TicTacToePlayerStats
     });
     document.body.appendChild(element);
-    
+
     expect(element).toBeTruthy();
   });
-
 });

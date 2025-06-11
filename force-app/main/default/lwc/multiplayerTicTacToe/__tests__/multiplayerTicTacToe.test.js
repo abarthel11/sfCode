@@ -12,11 +12,10 @@ describe("c-multiplayer-tic-tac-toe", () => {
     const element = createElement("c-multiplayer-tic-tac-toe", {
       is: MultiplayerTicTacToe
     });
-    element.sessionId = 'test-session-123';
+    element.sessionId = "test-session-123";
     document.body.appendChild(element);
-    
-    expect(element).toBeTruthy();
-    expect(element.sessionId).toBe('test-session-123');
-  });
 
+    expect(element).toBeTruthy();
+    expect(element.sessionId).toBe("test-session-123");
+  });
 });

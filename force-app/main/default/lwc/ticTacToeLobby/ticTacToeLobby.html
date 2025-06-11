@@ -1,30 +1,36 @@
 <template>
   <lightning-card title="Tic Tac Toe Game Lobby" icon-name="standard:games">
     <div class="slds-card__body slds-card__body_inner">
-      
       <!-- Loading state -->
       <template if:true={isLoading}>
         <div class="slds-align_absolute-center slds-p-around_medium">
-          <lightning-spinner alternative-text="Loading..." size="medium"></lightning-spinner>
+          <lightning-spinner
+            alternative-text="Loading..."
+            size="medium"
+          ></lightning-spinner>
         </div>
       </template>
-      
+
       <!-- Error state -->
       <template if:true={error}>
-        <div class="slds-notify slds-notify_alert slds-theme_alert-texture slds-theme_error" role="alert">
+        <div
+          class="slds-notify slds-notify_alert slds-theme_alert-texture slds-theme_error"
+          role="alert"
+        >
           <h2>{error}</h2>
         </div>
       </template>
-      
+
       <!-- Lobby content -->
       <template if:false={isLoading}>
-        
         <!-- Create new game section -->
         <div class="slds-grid slds-wrap slds-gutters_small slds-m-bottom_large">
           <div class="slds-col slds-size_1-of-1">
             <div class="slds-box slds-box_small">
-              <h3 class="slds-text-heading_small slds-m-bottom_small">Start New Game</h3>
-              
+              <h3 class="slds-text-heading_small slds-m-bottom_small">
+                Start New Game
+              </h3>
+
               <div class="slds-grid slds-gutters_small slds-grid_align-end">
                 <div class="slds-col slds-size_2-of-3">
                   <lightning-input
@@ -33,167 +39,207 @@
                     placeholder="Type player name or email..."
                     value={searchTerm}
                     onchange={handleSearchChange}
-                    class="search-input">
+                    class="search-input"
+                  >
                   </lightning-input>
-                  
+
                   <!-- Search results dropdown -->
                   <template if:true={showSearchResults}>
-                    <div class="search-results slds-dropdown slds-dropdown_fluid">
+                    <div
+                      class="search-results slds-dropdown slds-dropdown_fluid"
+                    >
                       <ul class="slds-dropdown__list" role="listbox">
                         <template for:each={searchResults} for:item="user">
-                          <li key={user.Id} class="slds-dropdown__item" role="option">
-                            <button 
-                              class="slds-button slds-button_reset slds-truncate" 
+                          <li
+                            key={user.Id}
+                            class="slds-dropdown__item"
+                            role="option"
+                          >
+                            <button
+                              class="slds-button slds-button_reset slds-truncate"
                               data-user-id={user.Id}
-                              onclick={handleSelectOpponent}>
-                              <span class="slds-truncate">{user.Name} ({user.Email})</span>
+                              onclick={handleSelectOpponent}
+                            >
+                              <span class="slds-truncate"
+                                >{user.Name} ({user.Email})</span
+                              >
                             </button>
                           </li>
                         </template>
-                        
+
                         <template if:true={noSearchResults}>
                           <li class="slds-dropdown__item">
-                            <span class="slds-text-color_weak">No users found</span>
+                            <span class="slds-text-color_weak"
+                              >No users found</span
+                            >
                           </li>
                         </template>
                       </ul>
                     </div>
                   </template>
                 </div>
-                
+
                 <div class="slds-col slds-size_1-of-3">
-                  <lightning-button 
-                    label="Send Invitation" 
-                    variant="brand" 
+                  <lightning-button
+                    label="Send Invitation"
+                    variant="brand"
                     onclick={handleCreateGame}
-                    disabled={isCreatingGame}>
+                    disabled={isCreatingGame}
+                  >
                   </lightning-button>
                 </div>
               </div>
-              
+
               <!-- Selected opponent display -->
               <template if:true={selectedOpponent}>
                 <div class="slds-m-top_small">
-                  <lightning-pill 
+                  <lightning-pill
                     label={selectedOpponent.Name}
-                    onremove={handleRemoveOpponent}>
+                    onremove={handleRemoveOpponent}
+                  >
                   </lightning-pill>
                 </div>
               </template>
-              
             </div>
           </div>
         </div>
-        
+
         <!-- Active games section -->
         <div class="slds-grid slds-wrap slds-gutters_small slds-m-bottom_large">
           <div class="slds-col slds-size_1-of-1">
             <div class="slds-box slds-box_small">
-              
               <div class="slds-grid slds-grid_align-spread slds-m-bottom_small">
                 <h3 class="slds-text-heading_small">My Active Games</h3>
-                <lightning-button-icon 
-                  icon-name="utility:refresh" 
-                  variant="border-filled" 
+                <lightning-button-icon
+                  icon-name="utility:refresh"
+                  variant="border-filled"
                   alternative-text="Refresh"
-                  onclick={handleRefreshGames}>
+                  onclick={handleRefreshGames}
+                >
                 </lightning-button-icon>
               </div>
-              
+
               <template if:true={hasActiveGames}>
                 <div class="game-list">
                   <template for:each={activeGames} for:item="game">
-                    <div key={game.sessionId} class="game-card slds-box slds-box_xx-small slds-m-bottom_x-small">
-                      
+                    <div
+                      key={game.sessionId}
+                      class="game-card slds-box slds-box_xx-small slds-m-bottom_x-small"
+                    >
                       <div class="slds-grid slds-grid_align-spread">
                         <div class="slds-col">
                           <div class="slds-grid slds-gutters_small">
-                            
                             <!-- Game info -->
                             <div class="slds-col slds-size_1-of-2">
-                              <div class="slds-text-body_small slds-text-color_weak">Game #{game.sessionId}</div>
+                              <div
+                                class="slds-text-body_small slds-text-color_weak"
+                              >
+                                Game #{game.sessionId}
+                              </div>
                               <div class="slds-text-body_regular">
-                                <span class="player-symbol">{game.mySymbol}</span> vs 
+                                <span class="player-symbol"
+                                  >{game.mySymbol}</span
+                                >
+                                vs
                                 <strong>{game.opponentName}</strong>
                               </div>
                             </div>
-                            
+
                             <!-- Game status -->
                             <div class="slds-col slds-size_1-of-4">
-                              <lightning-badge 
+                              <lightning-badge
                                 label={game.gameStatus}
-                                variant={game.statusVariant}>
+                                variant={game.statusVariant}
+                              >
                               </lightning-badge>
-                              
+
                               <template if:true={game.isMyTurn}>
-                                <div class="slds-text-body_small slds-text-color_success slds-m-top_xx-small">
-                                  <lightning-icon icon-name="utility:clock" size="xx-small"></lightning-icon>
+                                <div
+                                  class="slds-text-body_small slds-text-color_success slds-m-top_xx-small"
+                                >
+                                  <lightning-icon
+                                    icon-name="utility:clock"
+                                    size="xx-small"
+                                  ></lightning-icon>
                                   Your turn
                                 </div>
                               </template>
-                              
+
                               <template if:true={game.isPendingInvitation}>
-                                <div class="slds-text-body_small slds-text-color_warning slds-m-top_xx-small">
-                                  <lightning-icon icon-name="utility:warning" size="xx-small"></lightning-icon>
+                                <div
+                                  class="slds-text-body_small slds-text-color_warning slds-m-top_xx-small"
+                                >
+                                  <lightning-icon
+                                    icon-name="utility:warning"
+                                    size="xx-small"
+                                  ></lightning-icon>
                                   Pending acceptance
                                 </div>
                               </template>
                             </div>
-                            
+
                             <!-- Actions -->
-                            <div class="slds-col slds-size_1-of-4 slds-text-align_right">
-                              <lightning-button 
-                                label="Play" 
-                                variant="brand" 
+                            <div
+                              class="slds-col slds-size_1-of-4 slds-text-align_right"
+                            >
+                              <lightning-button
+                                label="Play"
+                                variant="brand"
                                 size="small"
                                 data-session-id={game.sessionId}
-                                onclick={handlePlayGame}>
+                                onclick={handlePlayGame}
+                              >
                               </lightning-button>
                             </div>
-                            
                           </div>
                         </div>
                       </div>
-                      
                     </div>
                   </template>
                 </div>
               </template>
-              
+
               <template if:false={hasActiveGames}>
                 <div class="slds-text-align_center slds-p-around_medium">
-                  <lightning-icon icon-name="utility:info" size="small" class="slds-m-bottom_small"></lightning-icon>
-                  <p class="slds-text-body_regular">No active games. Start a new game above!</p>
+                  <lightning-icon
+                    icon-name="utility:info"
+                    size="small"
+                    class="slds-m-bottom_small"
+                  ></lightning-icon>
+                  <p class="slds-text-body_regular">
+                    No active games. Start a new game above!
+                  </p>
                 </div>
               </template>
-              
             </div>
           </div>
         </div>
-        
+
         <!-- Quick actions -->
         <div class="slds-grid slds-wrap slds-gutters_small">
-          
           <!-- Statistics card -->
           <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2">
             <div class="slds-box slds-box_small">
-              <h3 class="slds-text-heading_small slds-m-bottom_small">My Statistics</h3>
-              <c-tic-tac-toe-player-stats player-id={currentUserId}></c-tic-tac-toe-player-stats>
+              <h3 class="slds-text-heading_small slds-m-bottom_small">
+                My Statistics
+              </h3>
+              <c-tic-tac-toe-player-stats
+                player-id={currentUserId}
+              ></c-tic-tac-toe-player-stats>
             </div>
           </div>
-          
+
           <!-- Leaderboard card -->
           <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2">
             <div class="slds-box slds-box_small">
-              <h3 class="slds-text-heading_small slds-m-bottom_small">Leaderboard</h3>
+              <h3 class="slds-text-heading_small slds-m-bottom_small">
+                Leaderboard
+              </h3>
               <c-tic-tac-toe-leaderboard limit="5"></c-tic-tac-toe-leaderboard>
             </div>
           </div>
-          
         </div>
-        
       </template>
-      
     </div>
   </lightning-card>
 </template>
