@@ -2,52 +2,26 @@
   <lightning-card title="Tic Tac Toe" icon-name="custom:custom86">
     <div class="slds-var-p-around_medium">
       <!-- Score Board -->
-      <div class="score-board slds-text-align_center slds-var-m-bottom_medium">
-        <div class="slds-grid slds-gutters slds-grid_align-center">
-          <div class="slds-col slds-size_1-of-3">
-            <div class="score-item">
-              <div class="slds-text-heading_small">Player X</div>
-              <div class="slds-text-heading_large">{playerXWins}</div>
-            </div>
-          </div>
-          <div class="slds-col slds-size_1-of-3">
-            <div class="score-item">
-              <div class="slds-text-heading_small">Draws</div>
-              <div class="slds-text-heading_large">{draws}</div>
-            </div>
-          </div>
-          <div class="slds-col slds-size_1-of-3">
-            <div class="score-item">
-              <div class="slds-text-heading_small">Player O</div>
-              <div class="slds-text-heading_large">{playerOWins}</div>
-            </div>
-          </div>
-        </div>
-      </div>
+      <c-tic-tac-toe-scoreboard
+        player-x-wins={playerXWins}
+        player-o-wins={playerOWins}
+        draws={draws}
+      ></c-tic-tac-toe-scoreboard>
 
       <!-- Game Status -->
-      <div class="game-status slds-text-align_center slds-var-m-bottom_medium">
-        <h2 class="slds-text-heading_medium slds-text-color_default">
-          {gameStatus}
-        </h2>
-      </div>
+      <c-tic-tac-toe-game-status
+        winner={winner}
+        is-draw={isDraw}
+        current-player={currentPlayer}
+      ></c-tic-tac-toe-game-status>
 
       <!-- Game Board -->
-      <div class="game-board" role="grid" aria-label="Tic Tac Toe game board">
-        <template for:each={cells} for:item="cell">
-          <button
-            key={cell.id}
-            class={cell.classNames}
-            data-index={cell.index}
-            onclick={handleCellClick}
-            disabled={cell.disabled}
-            aria-label={cell.ariaLabel}
-            role="gridcell"
-          >
-            <label class="cell-value">{cell.value}</label>
-          </button>
-        </template>
-      </div>
+      <c-tic-tac-toe-board
+        board={board}
+        winning-line={winningLine}
+        is-game-over={isGameOver}
+        oncellclick={handleCellClick}
+      ></c-tic-tac-toe-board>
 
       <!-- Game Controls -->
       <div class="game-controls slds-text-align_center slds-var-m-top_medium">

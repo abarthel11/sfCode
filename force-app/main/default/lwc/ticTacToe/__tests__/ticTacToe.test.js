@@ -14,248 +14,352 @@ describe("c-tic-tac-toe", () => {
     });
     document.body.appendChild(element);
 
-    const gameStatus = element.shadowRoot.querySelector(".game-status h2");
-    expect(gameStatus.textContent).toBe("Player X's turn");
+    // Check child components are rendered
+    const scoreboard = element.shadowRoot.querySelector("c-tic-tac-toe-scoreboard");
+    expect(scoreboard).toBeTruthy();
 
-    const cells = element.shadowRoot.querySelectorAll(".cell");
-    expect(cells.length).toBe(9);
-    cells.forEach((cell) => {
-      expect(cell.textContent).toBe("");
-      expect(cell.disabled).toBe(false);
-    });
+    const gameStatus = element.shadowRoot.querySelector("c-tic-tac-toe-game-status");
+    expect(gameStatus).toBeTruthy();
 
-    const scoreElements = element.shadowRoot.querySelectorAll(
-      ".slds-text-heading_large"
-    );
-    expect(scoreElements[0].textContent).toBe("0"); // Player X wins
-    expect(scoreElements[1].textContent).toBe("0"); // Draws
-    expect(scoreElements[2].textContent).toBe("0"); // Player O wins
+    const board = element.shadowRoot.querySelector("c-tic-tac-toe-board");
+    expect(board).toBeTruthy();
+
+    // Check game controls
+    const buttons = element.shadowRoot.querySelectorAll("lightning-button");
+    expect(buttons.length).toBe(2);
   });
 
-  it("handles cell clicks and alternates players", () => {
+  it("integrates with child components", () => {
     const element = createElement("c-tic-tac-toe", {
       is: TicTacToe
     });
     document.body.appendChild(element);
 
-    const cells = element.shadowRoot.querySelectorAll(".cell");
+    // Test that child components receive proper initial data
+    const board = element.shadowRoot.querySelector("c-tic-tac-toe-board");
+    const scoreboard = element.shadowRoot.querySelector("c-tic-tac-toe-scoreboard");
+    const gameStatus = element.shadowRoot.querySelector("c-tic-tac-toe-game-status");
 
-    // Player X clicks cell 0
-    cells[0].click();
-    return Promise.resolve()
-      .then(() => {
-        expect(cells[0].textContent).toBe("X");
-        expect(cells[0].disabled).toBe(true);
-
-        const gameStatus = element.shadowRoot.querySelector(".game-status h2");
-        expect(gameStatus.textContent).toBe("Player O's turn");
-
-        // Player O clicks cell 1
-        cells[1].click();
-        return Promise.resolve();
-      })
-      .then(() => {
-        expect(cells[1].textContent).toBe("O");
-        expect(cells[1].disabled).toBe(true);
-
-        const gameStatus = element.shadowRoot.querySelector(".game-status h2");
-        expect(gameStatus.textContent).toBe("Player X's turn");
-      });
+    expect(board.board).toEqual(Array(9).fill(""));
+    expect(board.isGameOver).toBeFalsy();
+    expect(scoreboard.playerXWins).toBe(0);
+    expect(gameStatus.currentPlayer).toBe("X");
   });
 
-  it("detects winning condition", () => {
+  it("has proper control buttons", () => {
     const element = createElement("c-tic-tac-toe", {
       is: TicTacToe
     });
     document.body.appendChild(element);
 
-    const cells = element.shadowRoot.querySelectorAll(".cell");
-
-    // Create winning condition for X (top row)
-    cells[0].click(); // X
-    return Promise.resolve()
-      .then(() => {
-        cells[3].click(); // O
-        return Promise.resolve();
-      })
-      .then(() => {
-        cells[1].click(); // X
-        return Promise.resolve();
-      })
-      .then(() => {
-        cells[4].click(); // O
-        return Promise.resolve();
-      })
-      .then(() => {
-        cells[2].click(); // X wins
-        return Promise.resolve();
-      })
-      .then(() => {
-        const gameStatus = element.shadowRoot.querySelector(".game-status h2");
-        expect(gameStatus.textContent).toBe("Player X wins!");
-
-        // Check if winning cells are highlighted
-        const winningCells =
-          element.shadowRoot.querySelectorAll(".winning-cell");
-        expect(winningCells.length).toBe(3);
-
-        // Check score update
-        const scoreElements = element.shadowRoot.querySelectorAll(
-          ".slds-text-heading_large"
-        );
-        expect(scoreElements[0].textContent).toBe("1"); // Player X wins
-
-        // Check that cells are disabled after game ends
-        cells.forEach((cell) => {
-          expect(cell.disabled).toBe(true);
-        });
-      });
+    const buttons = element.shadowRoot.querySelectorAll("lightning-button");
+    const buttonLabels = Array.from(buttons).map(btn => btn.label);
+    
+    expect(buttonLabels).toContain("New Game");
+    expect(buttonLabels).toContain("Reset Score");
   });
 
-  it("detects draw condition", () => {
+  it("handles cell click events", async () => {
     const element = createElement("c-tic-tac-toe", {
       is: TicTacToe
     });
     document.body.appendChild(element);
 
-    const cells = element.shadowRoot.querySelectorAll(".cell");
+    const board = element.shadowRoot.querySelector("c-tic-tac-toe-board");
+    
+    // Simulate cell click event
+    const cellClickEvent = new CustomEvent("cellclick", {
+      detail: { index: 0 }
+    });
+    
+    board.dispatchEvent(cellClickEvent);
+
+    // Wait for DOM updates
+    await Promise.resolve();
+
+    // Check that move was made
+    expect(board.board[0]).toBe("X");
+    expect(board.board.filter(cell => cell === "").length).toBe(8);
+  });
+
+  it("alternates players correctly", async () => {
+    const element = createElement("c-tic-tac-toe", {
+      is: TicTacToe
+    });
+    document.body.appendChild(element);
+
+    const board = element.shadowRoot.querySelector("c-tic-tac-toe-board");
+    const gameStatus = element.shadowRoot.querySelector("c-tic-tac-toe-game-status");
+
+    // First move - X
+    board.dispatchEvent(new CustomEvent("cellclick", { detail: { index: 0 } }));
+    await Promise.resolve();
+    expect(board.board[0]).toBe("X");
+    expect(gameStatus.currentPlayer).toBe("O");
+
+    // Second move - O
+    board.dispatchEvent(new CustomEvent("cellclick", { detail: { index: 1 } }));
+    await Promise.resolve();
+    expect(board.board[1]).toBe("O");
+    expect(gameStatus.currentPlayer).toBe("X");
+  });
+
+  it("prevents moves on occupied cells", async () => {
+    const element = createElement("c-tic-tac-toe", {
+      is: TicTacToe
+    });
+    document.body.appendChild(element);
+
+    const board = element.shadowRoot.querySelector("c-tic-tac-toe-board");
+    const gameStatus = element.shadowRoot.querySelector("c-tic-tac-toe-game-status");
+
+    // Make first move
+    board.dispatchEvent(new CustomEvent("cellclick", { detail: { index: 0 } }));
+    await Promise.resolve();
+    expect(board.board[0]).toBe("X");
+    expect(gameStatus.currentPlayer).toBe("O");
+
+    // Try to click same cell again
+    board.dispatchEvent(new CustomEvent("cellclick", { detail: { index: 0 } }));
+    await Promise.resolve();
+    expect(board.board[0]).toBe("X");
+    expect(gameStatus.currentPlayer).toBe("O"); // Should not change
+  });
+
+  it("detects horizontal win", async () => {
+    const element = createElement("c-tic-tac-toe", {
+      is: TicTacToe
+    });
+    document.body.appendChild(element);
+
+    const board = element.shadowRoot.querySelector("c-tic-tac-toe-board");
+    const gameStatus = element.shadowRoot.querySelector("c-tic-tac-toe-game-status");
+    const scoreboard = element.shadowRoot.querySelector("c-tic-tac-toe-scoreboard");
+
+    // Create winning scenario: X X X in top row
+    board.dispatchEvent(new CustomEvent("cellclick", { detail: { index: 0 } })); // X
+    board.dispatchEvent(new CustomEvent("cellclick", { detail: { index: 3 } })); // O
+    board.dispatchEvent(new CustomEvent("cellclick", { detail: { index: 1 } })); // X
+    board.dispatchEvent(new CustomEvent("cellclick", { detail: { index: 4 } })); // O
+    board.dispatchEvent(new CustomEvent("cellclick", { detail: { index: 2 } })); // X wins
+
+    await Promise.resolve();
+
+    expect(gameStatus.winner).toBe("X");
+    expect(board.isGameOver).toBeTruthy();
+    expect(scoreboard.playerXWins).toBe(1);
+    expect(board.winningLine).toEqual([0, 1, 2]);
+  });
+
+  it("detects vertical win", async () => {
+    const element = createElement("c-tic-tac-toe", {
+      is: TicTacToe
+    });
+    document.body.appendChild(element);
+
+    const board = element.shadowRoot.querySelector("c-tic-tac-toe-board");
+    const gameStatus = element.shadowRoot.querySelector("c-tic-tac-toe-game-status");
+
+    // Create winning scenario: O O O in first column
+    board.dispatchEvent(new CustomEvent("cellclick", { detail: { index: 1 } })); // X
+    board.dispatchEvent(new CustomEvent("cellclick", { detail: { index: 0 } })); // O
+    board.dispatchEvent(new CustomEvent("cellclick", { detail: { index: 2 } })); // X
+    board.dispatchEvent(new CustomEvent("cellclick", { detail: { index: 3 } })); // O
+    board.dispatchEvent(new CustomEvent("cellclick", { detail: { index: 4 } })); // X
+    board.dispatchEvent(new CustomEvent("cellclick", { detail: { index: 6 } })); // O wins
+
+    await Promise.resolve();
+
+    expect(gameStatus.winner).toBe("O");
+    expect(board.winningLine).toEqual([0, 3, 6]);
+  });
+
+  it("detects diagonal win", async () => {
+    const element = createElement("c-tic-tac-toe", {
+      is: TicTacToe
+    });
+    document.body.appendChild(element);
+
+    const board = element.shadowRoot.querySelector("c-tic-tac-toe-board");
+    const gameStatus = element.shadowRoot.querySelector("c-tic-tac-toe-game-status");
+
+    // Create winning scenario: X X X diagonally
+    board.dispatchEvent(new CustomEvent("cellclick", { detail: { index: 0 } })); // X
+    board.dispatchEvent(new CustomEvent("cellclick", { detail: { index: 1 } })); // O
+    board.dispatchEvent(new CustomEvent("cellclick", { detail: { index: 4 } })); // X
+    board.dispatchEvent(new CustomEvent("cellclick", { detail: { index: 2 } })); // O
+    board.dispatchEvent(new CustomEvent("cellclick", { detail: { index: 8 } })); // X wins
+
+    await Promise.resolve();
+
+    expect(gameStatus.winner).toBe("X");
+    expect(board.winningLine).toEqual([0, 4, 8]);
+  });
+
+  it("detects draw game", async () => {
+    const element = createElement("c-tic-tac-toe", {
+      is: TicTacToe
+    });
+    document.body.appendChild(element);
+
+    const board = element.shadowRoot.querySelector("c-tic-tac-toe-board");
+    const gameStatus = element.shadowRoot.querySelector("c-tic-tac-toe-game-status");
+    const scoreboard = element.shadowRoot.querySelector("c-tic-tac-toe-scoreboard");
 
     // Create draw scenario
     const moves = [0, 1, 2, 4, 3, 5, 7, 6, 8]; // Results in draw
-    let promise = Promise.resolve();
+    // eslint-disable-next-line no-await-in-loop
+    for (const index of moves) {
+      board.dispatchEvent(new CustomEvent("cellclick", { detail: { index } }));
+      await Promise.resolve();
+    }
 
-    moves.forEach((index) => {
-      promise = promise.then(() => {
-        cells[index].click();
-        return Promise.resolve();
-      });
-    });
-
-    return promise.then(() => {
-      const gameStatus = element.shadowRoot.querySelector(".game-status h2");
-      expect(gameStatus.textContent).toBe("Game is a draw!");
-
-      const scoreElements = element.shadowRoot.querySelectorAll(
-        ".slds-text-heading_large"
-      );
-      expect(scoreElements[1].textContent).toBe("1"); // Draws
-    });
+    expect(gameStatus.isDraw).toBe(true);
+    expect(gameStatus.winner).toBe(null);
+    expect(board.isGameOver).toBeTruthy();
+    expect(scoreboard.draws).toBe(1);
   });
 
-  it("starts new game when New Game button is clicked", () => {
+  it("prevents moves after game is over", async () => {
     const element = createElement("c-tic-tac-toe", {
       is: TicTacToe
     });
     document.body.appendChild(element);
 
-    const cells = element.shadowRoot.querySelectorAll(".cell");
+    const board = element.shadowRoot.querySelector("c-tic-tac-toe-board");
 
-    // Make some moves
-    cells[0].click();
-    return Promise.resolve()
-      .then(() => {
-        cells[1].click();
-        return Promise.resolve();
-      })
-      .then(() => {
-        // Click New Game button
-        const buttons = element.shadowRoot.querySelectorAll("lightning-button");
-        const newGameButton = Array.from(buttons).find(
-          (btn) => btn.label === "New Game"
-        );
-        newGameButton.click();
-        return Promise.resolve();
-      })
-      .then(() => {
-        // Check board is reset
-        const updatedCells = element.shadowRoot.querySelectorAll(".cell");
-        updatedCells.forEach((cell) => {
-          expect(cell.textContent).toBe("");
-          expect(cell.disabled).toBe(false);
-        });
+    // Create winning scenario
+    board.dispatchEvent(new CustomEvent("cellclick", { detail: { index: 0 } })); // X
+    board.dispatchEvent(new CustomEvent("cellclick", { detail: { index: 3 } })); // O
+    board.dispatchEvent(new CustomEvent("cellclick", { detail: { index: 1 } })); // X
+    board.dispatchEvent(new CustomEvent("cellclick", { detail: { index: 4 } })); // O
+    board.dispatchEvent(new CustomEvent("cellclick", { detail: { index: 2 } })); // X wins
 
-        const gameStatus = element.shadowRoot.querySelector(".game-status h2");
-        expect(gameStatus.textContent).toBe("Player X's turn");
-      });
+    await Promise.resolve();
+    const boardStateAfterWin = [...board.board];
+
+    // Try to make another move
+    board.dispatchEvent(new CustomEvent("cellclick", { detail: { index: 5 } }));
+    await Promise.resolve();
+
+    // Board should not change
+    expect(board.board).toEqual(boardStateAfterWin);
   });
 
-  it("resets score when Reset Score button is clicked", () => {
+  it("resets game with new game button", async () => {
     const element = createElement("c-tic-tac-toe", {
       is: TicTacToe
     });
     document.body.appendChild(element);
 
-    // Play a quick game where X wins
-    const cells = element.shadowRoot.querySelectorAll(".cell");
-    cells[0].click(); // X
-    return Promise.resolve()
-      .then(() => {
-        cells[3].click(); // O
-        return Promise.resolve();
-      })
-      .then(() => {
-        cells[1].click(); // X
-        return Promise.resolve();
-      })
-      .then(() => {
-        cells[4].click(); // O
-        return Promise.resolve();
-      })
-      .then(() => {
-        cells[2].click(); // X wins
-        return Promise.resolve();
-      })
-      .then(() => {
-        // Verify score is updated
-        const scoreElements = element.shadowRoot.querySelectorAll(
-          ".slds-text-heading_large"
-        );
-        expect(scoreElements[0].textContent).toBe("1"); // Player X wins
+    const board = element.shadowRoot.querySelector("c-tic-tac-toe-board");
+    const gameStatus = element.shadowRoot.querySelector("c-tic-tac-toe-game-status");
+    const scoreboard = element.shadowRoot.querySelector("c-tic-tac-toe-scoreboard");
 
-        // Click Reset Score button
-        const buttons = element.shadowRoot.querySelectorAll("lightning-button");
-        const resetButton = Array.from(buttons).find(
-          (btn) => btn.label === "Reset Score"
-        );
-        resetButton.click();
-        return Promise.resolve();
-      })
-      .then(() => {
-        const scoreElements = element.shadowRoot.querySelectorAll(
-          ".slds-text-heading_large"
-        );
-        expect(scoreElements[0].textContent).toBe("0"); // Player X wins
-        expect(scoreElements[1].textContent).toBe("0"); // Draws
-        expect(scoreElements[2].textContent).toBe("0"); // Player O wins
-      });
+    // Make some moves and create a win
+    board.dispatchEvent(new CustomEvent("cellclick", { detail: { index: 0 } }));
+    board.dispatchEvent(new CustomEvent("cellclick", { detail: { index: 3 } }));
+    board.dispatchEvent(new CustomEvent("cellclick", { detail: { index: 1 } }));
+    board.dispatchEvent(new CustomEvent("cellclick", { detail: { index: 4 } }));
+    board.dispatchEvent(new CustomEvent("cellclick", { detail: { index: 2 } }));
+
+    await Promise.resolve();
+    const initialXWins = scoreboard.playerXWins;
+
+    // Click new game button
+    const newGameButton = Array.from(element.shadowRoot.querySelectorAll("lightning-button"))
+      .find(btn => btn.label === "New Game");
+    newGameButton.click();
+
+    await Promise.resolve();
+
+    // Game should reset but scores should remain
+    expect(board.board).toEqual(Array(9).fill(""));
+    expect(gameStatus.currentPlayer).toBe("X");
+    expect(gameStatus.winner).toBe(null);
+    expect(gameStatus.isDraw).toBe(false);
+    expect(board.isGameOver).toBeFalsy();
+    expect(board.winningLine).toEqual([]);
+    expect(scoreboard.playerXWins).toBe(initialXWins); // Score preserved
   });
 
-  it("provides proper accessibility attributes", () => {
+  it("resets scores with reset score button", async () => {
     const element = createElement("c-tic-tac-toe", {
       is: TicTacToe
     });
     document.body.appendChild(element);
 
-    const gameBoard = element.shadowRoot.querySelector(".game-board");
-    expect(gameBoard.getAttribute("role")).toBe("grid");
-    expect(gameBoard.getAttribute("aria-label")).toBe("Tic Tac Toe game board");
+    const board = element.shadowRoot.querySelector("c-tic-tac-toe-board");
+    const scoreboard = element.shadowRoot.querySelector("c-tic-tac-toe-scoreboard");
 
-    const cells = element.shadowRoot.querySelectorAll(".cell");
-    cells.forEach((cell, index) => {
-      expect(cell.getAttribute("role")).toBe("gridcell");
-      const row = Math.floor(index / 3) + 1;
-      const col = (index % 3) + 1;
-      expect(cell.getAttribute("aria-label")).toBe(
-        `Row ${row}, Column ${col}, empty`
-      );
-    });
+    // Create a win to increment score
+    board.dispatchEvent(new CustomEvent("cellclick", { detail: { index: 0 } }));
+    board.dispatchEvent(new CustomEvent("cellclick", { detail: { index: 3 } }));
+    board.dispatchEvent(new CustomEvent("cellclick", { detail: { index: 1 } }));
+    board.dispatchEvent(new CustomEvent("cellclick", { detail: { index: 4 } }));
+    board.dispatchEvent(new CustomEvent("cellclick", { detail: { index: 2 } }));
 
-    // Test aria-label after a move
-    cells[0].click();
-    return Promise.resolve().then(() => {
-      expect(cells[0].getAttribute("aria-label")).toBe(
-        "Row 1, Column 1, marked by player X"
-      );
+    await Promise.resolve();
+    expect(scoreboard.playerXWins).toBe(1);
+
+    // Click reset score button
+    const resetScoreButton = Array.from(element.shadowRoot.querySelectorAll("lightning-button"))
+      .find(btn => btn.label === "Reset Score");
+    resetScoreButton.click();
+
+    await Promise.resolve();
+
+    // All scores should be reset and game should be reset
+    expect(scoreboard.playerXWins).toBe(0);
+    expect(scoreboard.playerOWins).toBe(0);
+    expect(scoreboard.draws).toBe(0);
+    expect(board.board).toEqual(Array(9).fill(""));
+  });
+
+  it("tracks multiple wins correctly", async () => {
+    const element = createElement("c-tic-tac-toe", {
+      is: TicTacToe
     });
+    document.body.appendChild(element);
+
+    const board = element.shadowRoot.querySelector("c-tic-tac-toe-board");
+    const scoreboard = element.shadowRoot.querySelector("c-tic-tac-toe-scoreboard");
+    const newGameButton = Array.from(element.shadowRoot.querySelectorAll("lightning-button"))
+      .find(btn => btn.label === "New Game");
+
+    // Game 1: X wins
+    // eslint-disable-next-line no-await-in-loop
+    for (const index of [0, 3, 1, 4, 2]) {
+      board.dispatchEvent(new CustomEvent("cellclick", { detail: { index } }));
+      await Promise.resolve();
+    }
+    expect(scoreboard.playerXWins).toBe(1);
+
+    // Start new game
+    newGameButton.click();
+    await Promise.resolve();
+
+    // Game 2: O wins
+    // eslint-disable-next-line no-await-in-loop
+    for (const index of [0, 3, 1, 4, 8, 5]) {
+      board.dispatchEvent(new CustomEvent("cellclick", { detail: { index } }));
+      await Promise.resolve();
+    }
+    expect(scoreboard.playerOWins).toBe(1);
+    expect(scoreboard.playerXWins).toBe(1);
+
+    // Start new game
+    newGameButton.click();
+    await Promise.resolve();
+
+    // Game 3: Draw
+    // eslint-disable-next-line no-await-in-loop
+    for (const index of [0, 1, 2, 4, 3, 5, 7, 6, 8]) {
+      board.dispatchEvent(new CustomEvent("cellclick", { detail: { index } }));
+      await Promise.resolve();
+    }
+    expect(scoreboard.draws).toBe(1);
+    expect(scoreboard.playerXWins).toBe(1);
+    expect(scoreboard.playerOWins).toBe(1);
   });
 });

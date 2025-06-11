@@ -1,0 +1,7 @@
+.game-status {
+    min-height: 2rem;
+}
+
+.game-status h2 {
+    font-weight: 600;
+}

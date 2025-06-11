@@ -1,0 +1,18 @@
+.game-board {
+    display: grid;
+    grid-template-columns: repeat(3, 100px);
+    grid-template-rows: repeat(3, 100px);
+    gap: 4px;
+    margin: 0 auto;
+    width: fit-content;
+    background-color: #333;
+    padding: 4px;
+    border-radius: 8px;
+}
+
+@media (max-width: 400px) {
+    .game-board {
+        grid-template-columns: repeat(3, 80px);
+        grid-template-rows: repeat(3, 80px);
+    }
+}
