@@ -1,0 +1,16 @@
+.tic-tac-toe-app {
+  padding: 1rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.slds-breadcrumb__nav {
+  display: flex;
+  align-items: center;
+}
+
+.slds-breadcrumb__item + .slds-breadcrumb__item::before {
+  content: '>';
+  margin: 0 0.5rem;
+  color: #706e6b;
+}

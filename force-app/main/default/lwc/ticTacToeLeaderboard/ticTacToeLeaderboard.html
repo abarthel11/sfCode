@@ -1,0 +1,66 @@
+<template>
+  <!-- Loading state -->
+  <template if:true={isLoading}>
+    <div class="slds-align_absolute-center">
+      <lightning-spinner alternative-text="Loading leaderboard..." size="small"></lightning-spinner>
+    </div>
+  </template>
+  
+  <!-- Error state -->
+  <template if:true={error}>
+    <div class="slds-text-color_error slds-text-body_small">
+      Failed to load leaderboard
+    </div>
+  </template>
+  
+  <!-- Leaderboard display -->
+  <template if:true={hasLeaderboardData}>
+    <div class="leaderboard-container">
+      
+      <template for:each={leaderboardData} for:item="player" for:index="index">
+        <div key={player.playerId} class="leaderboard-item slds-grid slds-grid_align-spread slds-p-vertical_xx-small">
+          
+          <!-- Rank and player info -->
+          <div class="slds-col slds-grid slds-gutters_x-small">
+            <div class="slds-col slds-shrink">
+              <div class="rank-badge" data-rank={player.rank}>
+                <span class="rank-number">{player.rank}</span>
+              </div>
+            </div>
+            
+            <div class="slds-col">
+              <div class="player-name slds-text-body_regular slds-truncate">
+                {player.playerName}
+              </div>
+              <div class="player-stats slds-text-body_small slds-text-color_weak">
+                {player.totalWins} wins • {player.totalGames} games
+              </div>
+            </div>
+          </div>
+          
+          <!-- Win percentage -->
+          <div class="slds-col slds-shrink slds-text-align_right">
+            <div class="win-percentage">{player.formattedWinPercentage}</div>
+            <template if:true={player.showMedal}>
+              <lightning-icon 
+                icon-name={player.medalIcon} 
+                size="x-small" 
+                class={player.medalClass}>
+              </lightning-icon>
+            </template>
+          </div>
+          
+        </div>
+      </template>
+      
+    </div>
+  </template>
+  
+  <!-- No data state -->
+  <template if:true={showNoDataMessage}>
+    <div class="slds-text-align_center slds-p-around_small">
+      <lightning-icon icon-name="utility:trophy" size="small" class="slds-m-bottom_x-small"></lightning-icon>
+      <p class="slds-text-body_small slds-text-color_weak">No games played yet</p>
+    </div>
+  </template>
+</template>

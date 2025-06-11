@@ -1,0 +1,73 @@
+.leaderboard-container {
+  max-height: 250px;
+  overflow-y: auto;
+}
+
+.leaderboard-item {
+  border-bottom: 1px solid #e5e5e5;
+  transition: background-color 0.2s ease;
+}
+
+.leaderboard-item:hover {
+  background-color: #f4f6fe;
+}
+
+.leaderboard-item:last-child {
+  border-bottom: none;
+}
+
+.rank-badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background-color: #e5e5e5;
+  font-size: 0.75rem;
+  font-weight: bold;
+}
+
+.rank-badge[data-rank="1"] {
+  background-color: #ffd700;
+  color: #333;
+}
+
+.rank-badge[data-rank="2"] {
+  background-color: #c0c0c0;
+  color: #333;
+}
+
+.rank-badge[data-rank="3"] {
+  background-color: #cd7f32;
+  color: white;
+}
+
+.rank-number {
+  line-height: 1;
+}
+
+.player-name {
+  font-weight: 500;
+}
+
+.player-stats {
+  margin-top: 0.125rem;
+}
+
+.win-percentage {
+  font-weight: bold;
+  color: #04844b;
+}
+
+.medal-gold {
+  color: #ffd700;
+}
+
+.medal-silver {
+  color: #c0c0c0;
+}
+
+.medal-bronze {
+  color: #cd7f32;
+}

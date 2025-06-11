@@ -1,0 +1,38 @@
+<template>
+  <div class="tic-tac-toe-app">
+    
+    <!-- Navigation breadcrumb -->
+    <nav class="slds-breadcrumb slds-m-bottom_medium" role="navigation" aria-label="Breadcrumb">
+      <ol class="slds-breadcrumb__nav">
+        <li class="slds-breadcrumb__item">
+          <button class="slds-button slds-button_reset" onclick={handleNavigateToLobby}>
+            <span class="slds-assistive-text">Go to </span>Lobby
+          </button>
+        </li>
+        <template if:true={currentGameSession}>
+          <li class="slds-breadcrumb__item slds-is-active">
+            <span aria-current="page">Game #{currentGameSession}</span>
+          </li>
+        </template>
+      </ol>
+    </nav>
+    
+    <!-- Lobby view -->
+    <template if:true={showLobby}>
+      <c-tic-tac-toe-lobby 
+        onplaygame={handlePlayGame}
+        onnewgame={handleNewGame}>
+      </c-tic-tac-toe-lobby>
+    </template>
+    
+    <!-- Game view -->
+    <template if:true={showGame}>
+      <c-multiplayer-tic-tac-toe 
+        session-id={currentGameSession}
+        onbacktolobby={handleBackToLobby}
+        onnewgame={handleNewGameFromGame}>
+      </c-multiplayer-tic-tac-toe>
+    </template>
+    
+  </div>
+</template>

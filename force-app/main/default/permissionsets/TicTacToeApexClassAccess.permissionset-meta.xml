@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Grants access to all TicTacToe Apex classes</description>
+    <hasActivationRequired>false</hasActivationRequired>
+    <label>TicTacToe Apex Class Access</label>
+    <classAccesses>
+        <apexClass>TicTacToeEventService</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>TicTacToeException</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>TicTacToeGameEngine</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>TicTacToeGameService</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>TicTacToeStatisticsService</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>TicTacToeUserSearchService</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+</PermissionSet>

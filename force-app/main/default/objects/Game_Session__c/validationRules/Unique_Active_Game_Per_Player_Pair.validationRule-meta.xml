@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Unique_Active_Game_Per_Player_Pair</fullName>
+    <active>true</active>
+    <description>Prevents creating multiple active games between the same two players</description>
+    <errorConditionFormula>AND(
+  OR(ISPICKVAL(Game_Status__c, &quot;Pending&quot;), ISPICKVAL(Game_Status__c, &quot;In Progress&quot;)),
+  NOT(ISBLANK(Player_X__c)),
+  NOT(ISBLANK(Player_O__c))
+)</errorConditionFormula>
+    <errorDisplayField>Player_O__c</errorDisplayField>
+    <errorMessage>You already have an active game with this player. Complete the existing game first.</errorMessage>
+</ValidationRule>

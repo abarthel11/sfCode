@@ -362,4 +362,51 @@ describe("c-tic-tac-toe", () => {
     expect(scoreboard.playerXWins).toBe(1);
     expect(scoreboard.playerOWins).toBe(1);
   });
+
+  it("handles edge case scenarios", async () => {
+    const element = createElement("c-tic-tac-toe", {
+      is: TicTacToe
+    });
+    document.body.appendChild(element);
+
+    const board = element.shadowRoot.querySelector("c-tic-tac-toe-board");
+    const gameStatus = element.shadowRoot.querySelector("c-tic-tac-toe-game-status");
+
+    // Test rapid consecutive clicks on same cell
+    board.dispatchEvent(new CustomEvent("cellclick", { detail: { index: 0 } }));
+    board.dispatchEvent(new CustomEvent("cellclick", { detail: { index: 0 } }));
+    board.dispatchEvent(new CustomEvent("cellclick", { detail: { index: 0 } }));
+    await Promise.resolve();
+
+    expect(board.board[0]).toBe("X");
+    expect(gameStatus.currentPlayer).toBe("O");
+  });
+
+  it("validates game state consistency", async () => {
+    const element = createElement("c-tic-tac-toe", {
+      is: TicTacToe
+    });
+    document.body.appendChild(element);
+
+    const board = element.shadowRoot.querySelector("c-tic-tac-toe-board");
+    const gameStatus = element.shadowRoot.querySelector("c-tic-tac-toe-game-status");
+
+    // Make several moves and validate state consistency
+    const moves = [0, 4, 1, 5, 2]; // X wins horizontally
+    // eslint-disable-next-line no-await-in-loop
+    for (let i = 0; i < moves.length; i++) {
+      board.dispatchEvent(new CustomEvent("cellclick", { detail: { index: moves[i] } }));
+      await Promise.resolve();
+      
+      // Validate turn alternation before game ends
+      if (i < moves.length - 1) {
+        const expectedPlayer = i % 2 === 0 ? "O" : "X";
+        expect(gameStatus.currentPlayer).toBe(expectedPlayer);
+      }
+    }
+
+    // Game should be over with X as winner
+    expect(gameStatus.winner).toBe("X");
+    expect(board.isGameOver).toBeTruthy();
+  });
 });

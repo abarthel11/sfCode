@@ -1,0 +1,30 @@
+.stats-container {
+  padding: 0.5rem;
+}
+
+.stat-item {
+  padding: 0.25rem;
+}
+
+.stat-value {
+  font-size: 1.5rem;
+  font-weight: bold;
+  line-height: 1.2;
+}
+
+.stat-value.wins {
+  color: #04844b;
+}
+
+.stat-value.losses {
+  color: #ea001e;
+}
+
+.stat-value.draws {
+  color: #706e6b;
+}
+
+.stat-label {
+  color: #706e6b;
+  margin-top: 0.125rem;
+}
